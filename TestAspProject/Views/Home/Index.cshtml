@@ -1,0 +1,65 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Messages";
+}
+
+<body ng-app="messagesApp" ng-controller="formCtrl as vm">
+
+    <h2>Text template : @ViewBag.Template</h2>
+
+    <div class="col col-sm-3 left">
+        <span>Enter valid text</span>
+        <input type="text" name="input" ng-keypress="($event.charCode==13)?vm.ParseTextClick():return"
+               ng-model="vm.textInput" ng-disabled="vm.formDisabled" onblur="this.focus()" autofocus focus-on="elementParsed" />
+        <input type="button" value="Parse" ng-click="vm.ParseTextClick()" ng-disabled="vm.formDisabled" />
+    </div>
+
+
+    <div ng-cloak="" class="tabsdemoDynamicHeight">
+        <md-content>
+            <md-tabs md-dynamic-height="" md-border-bottom="">
+                <md-tab label="New messages">
+                    <md-content class="md-padding messages-content tableBodyScroll">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Text</th>
+                                    <th class="left"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="message in vm.currentMessages | orderBy : 'Time'">
+                                    <td>{{ message.IsValid }}</td>
+                                    <td>{{ message.Text }}</td>
+                                    <td class="left"><a ng-click="vm.RemoveMessageClick(message)"><span class="glyphicon glyphicon-trash"></span></a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </md-content>
+                </md-tab>
+                <md-tab label="All messages">
+                    <md-content class="md-padding messages-content">
+                        <table class="table table-striped tableBodyScroll">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Text</th>
+                                    <th>Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="message in vm.allMessages | orderBy : 'Time'">
+                                    <td>{{ message.IsValid }}</td>
+                                    <td>{{ message.Text }}</td>
+                                    <td>{{ message.Time | date:'H:mm:ss' }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </md-content>
+                </md-tab>
+            </md-tabs>
+        </md-content>
+    </div>
+
+</body>
